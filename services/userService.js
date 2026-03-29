@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const pool = require("../db/db-manager");
 
 const userService = {
     create: async (user) => {
