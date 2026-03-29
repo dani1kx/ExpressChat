@@ -25,24 +25,9 @@ router.post('/login', async function (req, res, next) {
     let username = req.body.username
     let password = req.body.password
 
-    const result = await pool.query(`
-        select *
-        from users1
-        where username = $1
-    `, [username])
-
-    const user = result?.rows[0]
-    if (!user) {
-        res.status(401).send({message: "Invalid username or password"})
-    }
-
-    let isPasswordMatched = bcrypt.compareSync(password, user?.password)
-
-    if (isPasswordMatched) {
-        res.json(user)
-    } else {
-        res.status(401).send({message: "Invalid username or password"})
-    }
+    userService.authenticate(username, password)
+        .then(result => {res.json(result)})
+        .catch(err => res.status(401).send(err));
 })
 
 router.post('/register', async function (req, res, next) {
