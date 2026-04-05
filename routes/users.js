@@ -11,7 +11,10 @@ router.post('/login', async function (req, res, next) {
     let password = req.body.password
 
     userService.authenticate(username, password)
-        .then(result => {res.redirect("/chat")})
+        .then(result => {
+            req.session.user = result;
+            res.redirect("/chat")
+        })
         .catch(err => res.status(401).send(err));
 })
 
@@ -25,7 +28,10 @@ router.post('/register', async function (req, res, next) {
     }
 
     userService.create({username, password})
-        .then(result => res.redirect("/chat"))
+        .then(result => {
+            req.session.user = result;
+            res.redirect("/chat")
+        })
         .catch(err => res.status(400).send(err.message));
 })
 

@@ -25,8 +25,15 @@ let chatService = {
 
         return true;
     },
-    getAll: () => {
+    getAllByUserId: async (userId) => {
+        const query = `
+            SELECT c.*
+            from chats c
+                     JOIN chat_members cm on cm.chat_id = c.id
+            WHERE cm.user_id = $1;
+        `
 
+        return await pool.query(query, [userId]).rows
     },
     getById: (id) => {
 

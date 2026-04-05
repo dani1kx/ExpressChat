@@ -30,7 +30,18 @@ function createChat() {
     if (!name) return;
 
     chats.push({ name, messages: [] });
-    // TODO create fetch
+
+    const data = {
+        name: name,
+        imageUrl: "EMPTY",
+        userId: localStorage.getItem("userId"),
+    }
+
+    fetch("http://localhost:3000/chats", {
+        method: "POST",
+        body: JSON.stringify(data),
+    })
+
     save();
     renderChats();
 }
